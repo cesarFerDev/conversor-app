@@ -2,21 +2,22 @@ import { useState } from 'react';
 import heart from '../assets/Heart.png'
 import icon from '../assets/Icon-white.png'
 import cross from '../assets/Union.png'
+import { useDispatch, useSelector } from 'react-redux';
+import { addElement } from '../features/SavedData/SavedDataSlice';
 
 export const Conversor = (props) => {
 
-    //let mainUnit = "km";
-    //let convertedUnit = "miles";
-    //let conversion = 0.621371;
-    //let mainValue = 0;
-    //let convertedValue = mainValue * conversion;
+    const dispatch = useDispatch();
+
+    const savedData = useSelector(state => state.savedData);
+    console.log(savedData)
 
     const [mainUnit, setMainUnit] = useState("km");
     const [convertedUnit, setConvertedUnit] = useState("miles");
     const [conversion, setConversion] = useState(0.621371);
     const [mainValue, setMainValue] = useState(0);
     const [convertedValue, setConvertedValue] = useState(mainValue * conversion);
-    const [savedData, setSavedData] = useState([]);
+    //const [savedData, setSavedData] = useState([]);
 
     const selectChangeHandler = (event) => {
         let inputValue = document.getElementsByClassName('input-field')[0].value;
@@ -80,9 +81,9 @@ export const Conversor = (props) => {
             convertedValue: convertedValue,
             convertedUnit: convertedUnit
         };
-       
-        setSavedData([dataObject, ...savedData]);
+        dispatch(addElement(dataObject));
     };
+
 
     const dataToElements = (data) => {
         let elementsToRender = [];
@@ -90,7 +91,7 @@ export const Conversor = (props) => {
             elementsToRender.push(
                 <>
                 <div className='data-cell'>
-                    <p>{`${element.mainValue} ${element.mainUnit} → ${element.convertedValue} ${element.convertedUnit}`}</p>
+                    <p id="data">{`${element.mainValue} ${element.mainUnit} → ${element.convertedValue} ${element.convertedUnit}`}</p>
                     <button className='delete-btn'><img src={cross} alt="Delete icon" /></button>
                 </div>
                 </>
