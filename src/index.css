@@ -97,13 +97,17 @@ body {
   margin-right: 10px;
 }
 
+.selector option {
+  background-color: #2E0039;
+  color: #FFFFFF;
+}
+
 .input {
   display: flex;
   align-items: center;
   width: 50%;
   justify-content: flex-end;
   font-family: 'Poppins';
-  font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
@@ -116,6 +120,12 @@ body {
   background: none;
   border: none;
   border-bottom: 2px solid #FFFFFF;
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #FFFFFF;
+
 }
 
 .input p {
@@ -168,6 +178,7 @@ body {
 
 .data-saved {
   margin-top: 50px;
+  margin-bottom: 50px;
   width: 100%;
 }
 
