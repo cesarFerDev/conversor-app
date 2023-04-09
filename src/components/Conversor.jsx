@@ -3,21 +3,18 @@ import heart from '../assets/Heart.png'
 import icon from '../assets/Icon-white.png'
 import cross from '../assets/Union.png'
 import { useDispatch, useSelector } from 'react-redux';
-import { addElement } from '../features/SavedData/SavedDataSlice';
+import { addElement, removeElement } from '../features/SavedData/SavedDataSlice';
 
 export const Conversor = (props) => {
 
     const dispatch = useDispatch();
 
-    const savedData = useSelector(state => state.savedData);
-    console.log(savedData)
-
+    const savedData = useSelector(state => state.savedData.elements);
+    
     const [mainUnit, setMainUnit] = useState("km");
     const [convertedUnit, setConvertedUnit] = useState("miles");
     const [conversion, setConversion] = useState(0.621371);
     const [mainValue, setMainValue] = useState(0);
-    const [convertedValue, setConvertedValue] = useState(mainValue * conversion);
-    //const [savedData, setSavedData] = useState([]);
 
     const selectChangeHandler = (event) => {
         let inputValue = document.getElementsByClassName('input-field')[0].value;
@@ -28,62 +25,69 @@ export const Conversor = (props) => {
                 setConvertedUnit("miles");
                 setConversion(0.621371);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion);
+                
                 break;  
             case "miles-km":
                 setMainUnit("miles");
                 setConvertedUnit("km");
                 setConversion(1.60934);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion); 
+                
                 break;
             case "feet-m":
                 setMainUnit("feet");
                 setConvertedUnit("m");
                 setConversion(0.3048);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion); 
+                
                 break;
             case "m-feet":
                 setMainUnit("m");
                 setConvertedUnit("feet");
                 setConversion(3.28084);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion);
+                
                 break;
             case "cm-inches":
                 setMainUnit("cm");
                 setConvertedUnit("inches");
                 setConversion(0.393701);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion); 
+                
                 break;
             case "inches-cm":
                 setMainUnit("inches");
                 setConvertedUnit("cm");
                 setConversion(2.54);
                 setMainValue(inputValue);
-                setConvertedValue(inputValue * conversion); 
+                
                 break;
           }
     };
     
-
     const inputChangeHandler = (event) => {
         setMainValue(event.target.value);
-        setConvertedValue(mainValue * conversion);
     };
 
     const saveClickHandler = (event) => {
         let dataObject = {
             mainValue: mainValue,
             mainUnit: mainUnit,
-            convertedValue: convertedValue,
+            convertedValue: mainValue * conversion,
             convertedUnit: convertedUnit
         };
         dispatch(addElement(dataObject));
     };
 
+    const deleteClickHandler = (event) => {
+        let dataObject = {
+            mainValue: mainValue,
+            mainUnit: mainUnit,
+            convertedValue: mainValue * conversion,
+            convertedUnit: convertedUnit
+        };
+        dispatch(removeElement(dataObject));
+    }
 
     const dataToElements = (data) => {
         let elementsToRender = [];
@@ -92,7 +96,7 @@ export const Conversor = (props) => {
                 <>
                 <div className='data-cell'>
                     <p id="data">{`${element.mainValue} ${element.mainUnit} → ${element.convertedValue} ${element.convertedUnit}`}</p>
-                    <button className='delete-btn'><img src={cross} alt="Delete icon" /></button>
+                    <button onClick={deleteClickHandler} className='delete-btn'><img src={cross} alt="Delete icon" /></button>
                 </div>
                 </>
             );
@@ -127,7 +131,7 @@ export const Conversor = (props) => {
                 <div className="final-row">
                     <button onClick={saveClickHandler} className='save-btn'><img src={heart} alt="Save"/></button>
                     <div className='result'>
-                        <h4>{convertedValue}</h4>
+                        <h4>{mainValue * conversion}</h4>
                         <p>{convertedUnit}</p>
                     </div>
                 </div>
